@@ -54,4 +54,11 @@ public class Afspraak {
     public LocalDateTime getBegintijd() {
         return begintijd;
     }
+    public LocalDateTime getEindtijd() {
+        return eindtijd;
+    }
+
+    public String getLocatie() {
+        return locatie;
+    }
 }

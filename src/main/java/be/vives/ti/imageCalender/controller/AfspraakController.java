@@ -91,8 +91,10 @@ public class AfspraakController {
 
     private AfspraakResponse mapAfspraakToAfspraakResponse(Afspraak afspraak) {
         return new AfspraakResponse(
+                afspraak.getId(),
                 afspraak.getTitel(),
-                afspraak.getBegintijd()
+                afspraak.getBegintijd(),
+                afspraak.getEindtijd()
         );
     }
 }
