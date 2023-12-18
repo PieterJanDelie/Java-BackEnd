@@ -23,7 +23,8 @@ public class Gebruiker {
     @Size(min = 8, message = "Het wachtwoord moet minimum 8 karakters lang zijn")
     private String wachtwoord;
 
-    protected Gebruiker() {}
+    public Gebruiker() {
+    }
 
     public Gebruiker(String gebruikersnaam, String wachtwoord) {
         this.gebruikersnaam = gebruikersnaam;
@@ -42,15 +43,7 @@ public class Gebruiker {
         return gebruikersnaam;
     }
 
-    public void setGebruikersnaam(String gebruikersnaam) {
-        this.gebruikersnaam = gebruikersnaam;
-    }
-
     public String getWachtwoord() {
         return wachtwoord;
-    }
-
-    public void setWachtwoord(String wachtwoord) {
-        this.wachtwoord = wachtwoord;
     }
 }
