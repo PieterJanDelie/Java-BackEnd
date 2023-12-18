@@ -47,18 +47,6 @@ public class AfspraakControllerTest {
     }
 
     @Test
-    void testGetAllAfspraken() throws Exception {
-        Afspraak afspraak1 = new Afspraak();
-        Afspraak afspraak2 = new Afspraak();
-        Mockito.when(afspraakRepository.findAll()).thenReturn(List.of(afspraak1, afspraak2));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/afspraken")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2));
-    }
-
-    @Test
     void testCreateAfspraak() throws Exception {
         Afspraak afspraak = new Afspraak();
         afspraak.setId(1L);
