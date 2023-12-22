@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @CrossOrigin(origins = "http://localhost:19006")
 @RestController
 @RequestMapping("/quote")
@@ -21,12 +19,6 @@ public class QuoteController {
     @Autowired
     public QuoteController(QuoteService quoteService) {
         this.quoteService = quoteService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> addQuote(@RequestBody Quote quote) {
-        quoteService.addQuote(quote);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
