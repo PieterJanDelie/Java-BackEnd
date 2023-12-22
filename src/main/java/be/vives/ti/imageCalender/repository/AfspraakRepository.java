@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface AfspraakRepository extends JpaRepository<Afspraak, Long> {
     List<Afspraak> findByGebruiker(Gebruiker gebruiker);
+
+
+    List<Afspraak> findByGebruikerAndTitelContaining(Gebruiker gebruiker, String zoekTerm);
 }

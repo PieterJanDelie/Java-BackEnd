@@ -6,6 +6,7 @@ import be.vives.ti.imageCalender.domain.AfspraakResponse;
 import be.vives.ti.imageCalender.domain.Gebruiker;
 import be.vives.ti.imageCalender.repository.AfspraakRepository;
 import be.vives.ti.imageCalender.repository.GebruikersRepository;
+import be.vives.ti.imageCalender.services.AfspraakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,22 @@ public class AfspraakController {
     private final GebruikersRepository gebruikersRepository;
 
     @Autowired
+    private AfspraakService afspraakService;
+
+    @Autowired
     public AfspraakController(AfspraakRepository afspraakRepository, GebruikersRepository gebruikersRepository) {
         this.afspraakRepository = afspraakRepository;
         this.gebruikersRepository = gebruikersRepository;
     }
 
+    @GetMapping
+    public ResponseEntity<List<AfspraakResponse>> getAlleAfspraken() {
+        List<Afspraak> alleAfspraken = afspraakRepository.findAll();
+        List<AfspraakResponse> afspraakResponses = alleAfspraken.stream()
+                .map(this::mapAfspraakToAfspraakResponse)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(afspraakResponses, HttpStatus.OK);
+    }
     @GetMapping("/gebruiker/{gebruikersId}")
     public ResponseEntity<List<AfspraakResponse>> getAfsprakenByGebruikersId(@PathVariable Long gebruikersId) {
         Optional<Gebruiker> gebruiker = gebruikersRepository.findById(gebruikersId);
@@ -40,6 +52,17 @@ public class AfspraakController {
                     .map(this::mapAfspraakToAfspraakResponse)
                     .collect(Collectors.toList());
             return new ResponseEntity<>(afspraakResponses, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/zoeken/{gebruikersId}/{zoekTerm}")
+    public ResponseEntity<List<AfspraakResponse>> zoekAfsprakenOpTitel(@PathVariable Long gebruikersId, @PathVariable String zoekTerm) {
+        List<AfspraakResponse> gevondenAfspraken = afspraakService.zoekAfsprakenOpTitel(gebruikersId, zoekTerm.trim());
+
+        if (!gevondenAfspraken.isEmpty()) {
+            return new ResponseEntity<>(gevondenAfspraken, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
