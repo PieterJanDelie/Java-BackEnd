@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@CrossOrigin(origins = "http://localhost:19006")
 @RestController
 @RequestMapping("/afspraken")
 public class AfspraakController {
@@ -43,6 +42,7 @@ public class AfspraakController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(afspraakResponses, HttpStatus.OK);
     }
+
     @GetMapping("/gebruiker/{gebruikersId}")
     public ResponseEntity<List<AfspraakResponse>> getAfsprakenByGebruikersId(@PathVariable Long gebruikersId) {
         Optional<Gebruiker> gebruiker = gebruikersRepository.findById(gebruikersId);
@@ -95,7 +95,7 @@ public class AfspraakController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Afspraak> updateAfspraak(@PathVariable Long id,@Valid @RequestBody Afspraak updatedAfspraak) {
+    public ResponseEntity<Afspraak> updateAfspraak(@PathVariable Long id, @Valid @RequestBody Afspraak updatedAfspraak) {
         if (!afspraakRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

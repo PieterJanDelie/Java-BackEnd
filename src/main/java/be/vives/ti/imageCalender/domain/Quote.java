@@ -20,6 +20,7 @@ public class Quote {
 
     public Quote() {
     }
+
     public Quote(String quote) {
         this.quote = quote;
     }

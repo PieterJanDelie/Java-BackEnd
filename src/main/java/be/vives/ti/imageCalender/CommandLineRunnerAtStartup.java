@@ -17,7 +17,7 @@ public class CommandLineRunnerAtStartup implements CommandLineRunner {
 
     private final GebruikersRepository gebruikersRepository;
     private final AfspraakRepository afspraakRepository;
-    private  final QuoteRepository quoteRepository;
+    private final QuoteRepository quoteRepository;
 
     public CommandLineRunnerAtStartup(GebruikersRepository gebruikersRepository, AfspraakRepository afspraakRepository, QuoteRepository quoteRepository) {
         this.gebruikersRepository = gebruikersRepository;
@@ -34,6 +34,7 @@ public class CommandLineRunnerAtStartup implements CommandLineRunner {
 
         addQuotes();
     }
+
     private void addGebruikers() {
         Gebruiker[] gebruikers = new Gebruiker[]{
                 new Gebruiker("Pieter-JanDelie", "12345678"),
@@ -47,6 +48,7 @@ public class CommandLineRunnerAtStartup implements CommandLineRunner {
             gebruikersRepository.save(gebruiker);
         }
     }
+
     private void addAfspraken(Gebruiker gebruiker) {
         if (gebruiker != null) {
             Afspraak afspraak1 = new Afspraak(

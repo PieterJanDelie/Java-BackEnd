@@ -134,6 +134,7 @@ public class AfspraakControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
     @Test
     void testGetAlleAfspraken() throws Exception {
         List<Afspraak> afspraken = Arrays.asList(
@@ -155,6 +156,7 @@ public class AfspraakControllerTest {
                         .content("{\"gebruikersID\": 1, \"titel\": \"\", \"begintijd\": \"2023-12-31T12:00\", \"eindtijd\": \"2023-12-31T13:00\", \"locatie\": \"Werk\"}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
+
     @Test
     void testGetAfsprakenByGebruikersId() throws Exception {
         long gebruikerId = 999L;
@@ -174,6 +176,7 @@ public class AfspraakControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)));
     }
+
     @Test
     void testZoekAfsprakenOpTitel() throws Exception {
         long gebruikerId = 1L;
