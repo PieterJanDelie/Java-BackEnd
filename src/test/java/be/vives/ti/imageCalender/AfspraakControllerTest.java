@@ -2,9 +2,12 @@ package be.vives.ti.imageCalender;
 
 import be.vives.ti.imageCalender.controller.AfspraakController;
 import be.vives.ti.imageCalender.domain.Afspraak;
+import be.vives.ti.imageCalender.domain.AfspraakResponse;
 import be.vives.ti.imageCalender.domain.Gebruiker;
 import be.vives.ti.imageCalender.repository.AfspraakRepository;
 import be.vives.ti.imageCalender.repository.GebruikersRepository;
+import be.vives.ti.imageCalender.services.AfspraakService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +30,9 @@ import java.util.Optional;
 public class AfspraakControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private AfspraakService afspraakService;
 
     @MockBean
     private AfspraakRepository afspraakRepository;
@@ -125,5 +133,64 @@ public class AfspraakControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/afspraken/{id}", afspraakId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+    @Test
+    void testGetAlleAfspraken() throws Exception {
+        List<Afspraak> afspraken = Arrays.asList(
+                new Afspraak(new Gebruiker(), "Afspraak1", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Locatie1"),
+                new Afspraak(new Gebruiker(), "Afspraak2", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Locatie2")
+        );
+        Mockito.when(afspraakRepository.findAll()).thenReturn(afspraken);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/afspraken")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)));
+    }
+
+    @Test
+    void testCreateAfspraak_InvalidInput() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/afspraken")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"gebruikersID\": 1, \"titel\": \"\", \"begintijd\": \"2023-12-31T12:00\", \"eindtijd\": \"2023-12-31T13:00\", \"locatie\": \"Werk\"}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    void testGetAfsprakenByGebruikersId() throws Exception {
+        long gebruikerId = 999L;
+        Gebruiker gebruiker = new Gebruiker();
+        gebruiker.setId(gebruikerId);
+
+        List<Afspraak> afspraken = Arrays.asList(
+                new Afspraak(gebruiker, "Afspraak1", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Locatie1"),
+                new Afspraak(gebruiker, "Afspraak2", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Locatie2")
+        );
+
+        Mockito.when(gebruikersRepository.findById(gebruikerId)).thenReturn(Optional.of(gebruiker));
+        Mockito.when(afspraakRepository.findByGebruiker(gebruiker)).thenReturn(afspraken);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/afspraken/gebruiker/{gebruikersId}", gebruikerId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)));
+    }
+    @Test
+    void testZoekAfsprakenOpTitel() throws Exception {
+        long gebruikerId = 1L;
+        String zoekTerm = "Afspraak";
+
+        List<AfspraakResponse> afspraken = Arrays.asList(
+                new AfspraakResponse(1L, "Afspraak1", LocalDateTime.now(), LocalDateTime.now().plusHours(1)),
+                new AfspraakResponse(2L, "Afspraak2", LocalDateTime.now(), LocalDateTime.now().plusHours(2))
+        );
+
+        Mockito.when(afspraakService.zoekAfsprakenOpTitel(gebruikerId, zoekTerm)).thenReturn(afspraken);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/afspraken/zoeken/{gebruikersId}/{zoekTerm}", gebruikerId, zoekTerm)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2L));
     }
 }

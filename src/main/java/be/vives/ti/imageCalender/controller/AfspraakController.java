@@ -7,6 +7,7 @@ import be.vives.ti.imageCalender.domain.Gebruiker;
 import be.vives.ti.imageCalender.repository.AfspraakRepository;
 import be.vives.ti.imageCalender.repository.GebruikersRepository;
 import be.vives.ti.imageCalender.services.AfspraakService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,7 +77,7 @@ public class AfspraakController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createAfspraak(@RequestBody AfspraakRequest afspraakRequest) {
+    public ResponseEntity<Long> createAfspraak(@Valid @RequestBody AfspraakRequest afspraakRequest) {
         Optional<Gebruiker> gebruiker = gebruikersRepository.findById(afspraakRequest.getGebruikersID());
         if (gebruiker.isPresent()) {
             Afspraak afspraak = new Afspraak(
@@ -94,7 +95,7 @@ public class AfspraakController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Afspraak> updateAfspraak(@PathVariable Long id, @RequestBody Afspraak updatedAfspraak) {
+    public ResponseEntity<Afspraak> updateAfspraak(@PathVariable Long id,@Valid @RequestBody Afspraak updatedAfspraak) {
         if (!afspraakRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

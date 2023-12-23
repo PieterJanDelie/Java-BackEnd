@@ -1,6 +1,7 @@
 package be.vives.ti.imageCalender.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class Afspraak {
     @JoinColumn(name = "gebruiker_id", nullable = false)
     private Gebruiker gebruiker;
 
-    @NotNull
+    @NotBlank(message = "Titel mag niet leeg zijn")
     private String titel;
 
     @NotNull

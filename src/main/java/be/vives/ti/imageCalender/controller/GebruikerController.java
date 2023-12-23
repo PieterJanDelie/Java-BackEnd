@@ -3,19 +3,23 @@ package be.vives.ti.imageCalender.controller;
 
 import be.vives.ti.imageCalender.domain.Gebruiker;
 import be.vives.ti.imageCalender.repository.GebruikersRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "http://localhost:19006")
 @RestController
 @RequestMapping("/auth")
+@Validated
 public class GebruikerController {
 
     private final GebruikersRepository gebruikersRepository;
@@ -31,7 +35,7 @@ public class GebruikerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody Gebruiker loginCredentials) {
+    public ResponseEntity<Long> login(@Valid @RequestBody Gebruiker loginCredentials) {
         Optional<Gebruiker> optionalGebruiker = gebruikersRepository.findByGebruikersnaam(loginCredentials.getGebruikersnaam());
 
         System.out.println("Optional user: " + optionalGebruiker.orElse(null));
@@ -39,7 +43,6 @@ public class GebruikerController {
         if (optionalGebruiker.isPresent()) {
             Gebruiker gebruiker = optionalGebruiker.get();
 
-            // Vergelijk wachtwoord zonder hashen
             if (loginCredentials.getWachtwoord().equals(gebruiker.getWachtwoord())) {
                 System.out.println("Login successful for user: " + gebruiker.getGebruikersnaam());
                 return new ResponseEntity<>(gebruiker.getId(), HttpStatus.OK);
@@ -53,7 +56,7 @@ public class GebruikerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Long> createGebruiker(@RequestBody Gebruiker gebruiker) {
+    public ResponseEntity<Long> createGebruiker(@Valid @RequestBody Gebruiker gebruiker) {
         Gebruiker createdGebruiker = gebruikersRepository.save(gebruiker);
         return new ResponseEntity<>(createdGebruiker.getId(), HttpStatus.CREATED);
     }
@@ -67,7 +70,7 @@ public class GebruikerController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Gebruiker> updateGebruiker(@PathVariable Long id, @RequestBody Gebruiker updatedGebruiker) {
+    public ResponseEntity<Gebruiker> updateGebruiker(@PathVariable Long id, @Valid @RequestBody Gebruiker updatedGebruiker) {
         if (!gebruikersRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
