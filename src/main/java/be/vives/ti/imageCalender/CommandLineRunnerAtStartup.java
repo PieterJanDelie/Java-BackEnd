@@ -64,8 +64,26 @@ public class CommandLineRunnerAtStartup implements CommandLineRunner {
                     "Thuis"
             );
 
+            Afspraak afspraak3 = new Afspraak(
+                    gebruiker,
+                    "Bespreking",
+                    LocalDateTime.now().plusDays(2),
+                    LocalDateTime.now().plusDays(2).plusHours(3),
+                    "Thuis"
+            );
+
+            Afspraak afspraak4 = new Afspraak(
+                    gebruiker,
+                    "Bespraking",
+                    LocalDateTime.now().plusDays(2),
+                    LocalDateTime.now().plusDays(2).plusHours(3),
+                    "Thuis"
+            );
+
             afspraakRepository.save(afspraak1);
             afspraakRepository.save(afspraak2);
+            afspraakRepository.save(afspraak3);
+            afspraakRepository.save(afspraak4);
         }
     }
 

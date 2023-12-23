@@ -1,8 +1,8 @@
 package be.vives.ti.imageCalender.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity

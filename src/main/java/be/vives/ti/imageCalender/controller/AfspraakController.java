@@ -81,7 +81,7 @@ public class AfspraakController {
         if (gebruiker.isPresent()) {
             Afspraak afspraak = new Afspraak(
                     gebruiker.get(),
-                    afspraakRequest.getTitel(),
+                    afspraakRequest.getTitel().toUpperCase(),
                     afspraakRequest.getBegintijd(),
                     afspraakRequest.getEindtijd(),
                     afspraakRequest.getLocatie()
