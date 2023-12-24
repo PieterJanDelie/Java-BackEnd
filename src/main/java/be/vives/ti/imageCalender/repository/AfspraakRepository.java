@@ -2,6 +2,7 @@ package be.vives.ti.imageCalender.repository;
 
 import be.vives.ti.imageCalender.domain.Afspraak;
 import be.vives.ti.imageCalender.domain.Gebruiker;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ public interface AfspraakRepository extends JpaRepository<Afspraak, Long> {
     List<Afspraak> findByGebruiker(Gebruiker gebruiker);
 
     @Modifying
+    @Transactional
     @Query("DELETE FROM Afspraak a WHERE a.gebruiker = :gebruiker")
     void verwijderAfsprakenVanGebruiker(@Param("gebruiker") Gebruiker gebruiker);
 
