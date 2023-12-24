@@ -3,6 +3,7 @@ package be.vives.ti.imageCalender.controller;
 
 import be.vives.ti.imageCalender.domain.Gebruiker;
 import be.vives.ti.imageCalender.repository.GebruikersRepository;
+import be.vives.ti.imageCalender.services.GebruikerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,12 @@ public class GebruikerController {
     private final GebruikersRepository gebruikersRepository;
 
     @Autowired
-    public GebruikerController(GebruikersRepository gebruikersRepository) {
+    private GebruikerService gebruikerService;
+
+    @Autowired
+    public GebruikerController(GebruikersRepository gebruikersRepository, GebruikerService gebruikerService) {
         this.gebruikersRepository = gebruikersRepository;
+        this.gebruikerService = gebruikerService;
     }
 
     @GetMapping
@@ -82,7 +87,9 @@ public class GebruikerController {
         if (!gebruikersRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        gebruikersRepository.deleteById(id);
+
+        gebruikerService.verwijderGebruikerEnAfspraken(id);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

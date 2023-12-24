@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/quote")
 public class QuoteController {
-
-
     private final QuoteService quoteService;
 
     @Autowired

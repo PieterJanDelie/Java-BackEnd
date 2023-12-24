@@ -29,9 +29,10 @@ public class AfspraakController {
     private AfspraakService afspraakService;
 
     @Autowired
-    public AfspraakController(AfspraakRepository afspraakRepository, GebruikersRepository gebruikersRepository) {
+    public AfspraakController(AfspraakRepository afspraakRepository, GebruikersRepository gebruikersRepository, AfspraakService afspraakService) {
         this.afspraakRepository = afspraakRepository;
         this.gebruikersRepository = gebruikersRepository;
+        this.afspraakService = afspraakService;
     }
 
     @GetMapping

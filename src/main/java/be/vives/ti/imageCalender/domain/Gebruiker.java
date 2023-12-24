@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -15,13 +16,11 @@ public class Gebruiker {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 50, message = "De gebruikersnaam moet tussen de 3 en 50 karakters zijn")
     private String gebruikersnaam;
 
-    @NotNull
-    @Size(min = 8, message = "Het wachtwoord moet minimum 8 karakters lang zijn")
+    @Size(min = 8, max = 20, message = "Wachtwoord moet tussen de 8 en 20 tekens lang zijn")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Wachtwoord mag alleen letters en cijfers bevatten")
     private String wachtwoord;
-
     public Gebruiker() {
     }
 
