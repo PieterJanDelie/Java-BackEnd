@@ -26,7 +26,7 @@ public class AfspraakController {
     private final GebruikersRepository gebruikersRepository;
 
     @Autowired
-    private AfspraakService afspraakService;
+    private final AfspraakService afspraakService;
 
     @Autowired
     public AfspraakController(AfspraakRepository afspraakRepository, GebruikersRepository gebruikersRepository, AfspraakService afspraakService) {

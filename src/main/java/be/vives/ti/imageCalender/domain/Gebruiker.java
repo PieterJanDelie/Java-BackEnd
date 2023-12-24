@@ -21,6 +21,7 @@ public class Gebruiker {
     @Size(min = 8, max = 20, message = "Wachtwoord moet tussen de 8 en 20 tekens lang zijn")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Wachtwoord mag alleen letters en cijfers bevatten")
     private String wachtwoord;
+
     public Gebruiker() {
     }
 

@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 public class AfspraakResponse {
 
-    private Long id;
+    private final Long id;
 
-    private String titel;
-    private LocalDateTime begintijd;
-    private LocalDateTime eindtijd;
+    private final String titel;
+    private final LocalDateTime begintijd;
+    private final LocalDateTime eindtijd;
 
     public AfspraakResponse(Long id, String titel, LocalDateTime begintijd, LocalDateTime eindtijd) {
         this.id = id;

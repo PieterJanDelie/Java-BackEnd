@@ -1,7 +1,6 @@
 package be.vives.ti.imageCalender;
 
 import be.vives.ti.imageCalender.controller.QuoteController;
-import be.vives.ti.imageCalender.services.AfspraakService;
 import be.vives.ti.imageCalender.services.QuoteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -24,7 +24,7 @@ public class GebruikerController {
     private final GebruikersRepository gebruikersRepository;
 
     @Autowired
-    private GebruikerService gebruikerService;
+    private final GebruikerService gebruikerService;
 
     @Autowired
     public GebruikerController(GebruikersRepository gebruikersRepository, GebruikerService gebruikerService) {

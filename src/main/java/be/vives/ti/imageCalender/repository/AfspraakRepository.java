@@ -17,5 +17,6 @@ public interface AfspraakRepository extends JpaRepository<Afspraak, Long> {
     @Modifying
     @Query("DELETE FROM Afspraak a WHERE a.gebruiker = :gebruiker")
     void verwijderAfsprakenVanGebruiker(@Param("gebruiker") Gebruiker gebruiker);
+
     List<Afspraak> findByGebruikerAndTitelContaining(Gebruiker gebruiker, String zoekTerm);
 }
